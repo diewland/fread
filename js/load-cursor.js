@@ -42,18 +42,20 @@ function enable_cursor_mode(){
 }
 
 $('#search').keyup(function(evt){
-    // render fread from q
+    // remove slash from search text
     var q = $(this).val().replace(/\//g, '');
-    if(evt.keyCode == CODE_ESC){
-        q = ''; // if press ESC, clear textbox
-    }
-    $(this).val(q);
-    render_feed(DATA, q);
-
-    // if press ESC, switch to cursor mode
-    if(evt.keyCode == CODE_ESC){
+    // press ESC when textbox is blank, exit search mode
+    if((q == '')&&(evt.keyCode == CODE_ESC)){
         enable_cursor_mode();
     }
+    // press ESC when textbox is not blank, remove text
+    else if(evt.keyCode == CODE_ESC){
+        q = '';
+    }
+    // update textbox
+    $(this).val(q);
+    // render fread from q
+    render_feed(DATA, q);
 });
 
 $('body').keypress(function(evt){
@@ -123,7 +125,7 @@ $('body').keypress(function(evt){
                 + '=== SEARCH ===\n'
                 + '\n'
                 + '/ - Toggle Search/Cursor mode\n'
-                + 'Esc - Exist Search mode\n'
+                + 'Esc - Clear Search box, Exist Search mode\n'
                 + '\n'
                 + '=== OTHER ===\n'
                 + '\n'
