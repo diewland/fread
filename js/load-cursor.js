@@ -16,34 +16,57 @@ var KEY_R = 114;
 
 var CODE_ESC = 27;
 
+function enable_search_mode(){
+    CURSOR_MODE = false;
+    $('#search').show(0, function(){
+        $(this).focus();
+    });
+}
+
+function enable_cursor_mode(){
+    CURSOR_MODE = true;
+    CURSOR = 0;
+    if($('#search').val() != ''){
+        // search something, don't hide search box
+        $('#search').blur();
+        $('.item').removeClass('active');
+        $('.item').eq(CURSOR).addClass('active');
+    }
+    else {
+        // search is blank, hide search box
+        $('#search').hide(0, function(){
+            $('.item').removeClass('active');
+            $('.item').eq(CURSOR).addClass('active');
+        });
+    }
+}
+
 $('#search').keyup(function(evt){
+    // render fread from q
     var q = $(this).val().replace(/\//g, '');
     if(evt.keyCode == CODE_ESC){
-        // clear search when press ESC
-        q = '';
+        q = ''; // if press ESC, clear textbox
     }
     $(this).val(q);
     render_feed(DATA, q);
+
+    // if press ESC, switch to cursor mode
+    if(evt.keyCode == CODE_ESC){
+        enable_cursor_mode();
+    }
 });
 
 $('body').keypress(function(evt){
     // console.log(evt.which);
     // console.log(evt.keyCode);
 
+    // switch cursor/search mode
     if(evt.which == KEY_SLSH){
-        if(CURSOR_MODE){ // switch to search mode
-            CURSOR_MODE = false;
-            $('#search').show(0, function(){
-                $(this).focus();
-            });
+        if(CURSOR_MODE){
+            enable_search_mode();
         }
-        else { // switch to cursor mode
-            CURSOR_MODE = true;
-            $('#search').hide(0, function(){
-                CURSOR = 0;
-                $('.item').removeClass('active');
-                $('.item').eq(CURSOR).addClass('active');
-            });
+        else {
+            enable_cursor_mode();
         }
     }
     if(!CURSOR_MODE){
