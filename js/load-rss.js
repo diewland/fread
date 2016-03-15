@@ -1,6 +1,6 @@
 // require js/whateverorigin.js
 
-var data = [];
+var DATA = [];
 var left_sources = sources.length;
 
 $('#fread').html('<br />');
@@ -35,7 +35,7 @@ for( i in sources){
                 link = $(item).find('link').attr('href');
             }
             if(title){
-                data.push({
+                DATA.push({
                     src:        src_name,
                     title:      title,
                     pub_date:   new Date(pub_date),
@@ -49,40 +49,50 @@ for( i in sources){
         // load all source ?
         left_sources--;
         if(left_sources == 0){
-
-            x = data; // TODO
-
-            // sort data by publish date
-            data.sort(function(a, b){
-                return a['pub_date'] - b['pub_date'];
-            });
-
-            // write data to screen
-            $('#fread').html('');
-            for(i in data){
-                var d = data[i];
-                var row = "<div class='item' ref='" + (data.length-i-1) + "'>"
-                            + "<div class='bar row'>"
-                                + "<div class='col-md-9'>" + d['src'] + " - " + d['title'] + "</div>"
-                                + "<div class='col-md-3 ts'>" + d['pub_date'].toLocaleString() + "</div>"
-                            + "</div>"
-                            + "<div class='content'>"
-                                + "<div class='owner'>" + d['owner'] + "</div>"
-                                + d['desc']
-                                + "<div class='link'>" + d['link'] + "</div>"
-                            + "</div>"
-                        + "</div>";
-                $('#fread').prepend(row)
-            }
-
-            // bind mouse events
-            $('.item').on('click', function(){
-                $('.item').removeClass('active');
-                $(this).addClass('active');
-                $('.item .content').slideUp();
-                $(this).find('.content').slideToggle();
-                CURSOR = parseInt($(this).attr('ref'));
-            })
+            render_feed(DATA);
         }
     });
+}
+
+function render_feed(cur_data, filter){
+
+    if((filter)&&(filter != '')){
+        filter = filter.toLowerCase();
+        cur_data = cur_data.filter(function(o){
+            return ( o['title'].toLowerCase().indexOf(filter) > 0 ) ||
+                   ( o['desc'].toLowerCase().indexOf(filter) > 0 );
+        });
+    }
+
+    // sort data by publish date
+    cur_data.sort(function(a, b){
+        return a['pub_date'] - b['pub_date'];
+    });
+
+    // write cur_data to screen
+    $('#fread').html('');
+    for(i in cur_data){
+        var d = cur_data[i];
+        var row = "<div class='item' ref='" + (cur_data.length-i-1) + "'>"
+                    + "<div class='bar row'>"
+                        + "<div class='col-md-9'>" + d['src'] + " - " + d['title'] + "</div>"
+                        + "<div class='col-md-3 ts'>" + d['pub_date'].toLocaleString() + "</div>"
+                    + "</div>"
+                    + "<div class='content'>"
+                        + "<div class='owner'>" + d['owner'] + "</div>"
+                        + d['desc']
+                        + "<div><a class='link' href='" + d['link'] + "' target='_blank'>" + d['link'] + "</a></div>"
+                    + "</div>"
+                + "</div>";
+        $('#fread').prepend(row)
+    }
+
+    // bind mouse events
+    $('.item').on('click', function(){
+        $('.item').removeClass('active');
+        $(this).addClass('active');
+        $('.item .content').slideUp();
+        $(this).find('.content').slideToggle();
+        CURSOR = parseInt($(this).attr('ref'));
+    })
 }
