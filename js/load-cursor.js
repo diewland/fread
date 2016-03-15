@@ -14,26 +14,32 @@ var KEY_O = 111;
 var KEY_P = 112;
 var KEY_R = 114;
 
-$('#search').keyup(function(v){
-    var q = $('#search').val().replace(/\//g, '');
+var CODE_ESC = 27;
+
+$('#search').keyup(function(evt){
+    var q = $(this).val().replace(/\//g, '');
+    if(evt.keyCode == CODE_ESC){
+        // clear search when press ESC
+        q = '';
+    }
+    $(this).val(q);
     render_feed(DATA, q);
 });
 
 $('body').keypress(function(evt){
     // console.log(evt.which);
+    // console.log(evt.keyCode);
 
     if(evt.which == KEY_SLSH){
         if(CURSOR_MODE){ // switch to search mode
             CURSOR_MODE = false;
-            $('#search').slideDown(function(){
-                $(this).val($(this).val().replace(/\//g, ''));
+            $('#search').show(0, function(){
                 $(this).focus();
             });
         }
         else { // switch to cursor mode
             CURSOR_MODE = true;
-            $('#search').slideUp(function(){
-                $(this).val($(this).val().replace(/\//g, ''));
+            $('#search').hide(0, function(){
                 CURSOR = 0;
                 $('.item').removeClass('active');
                 $('.item').eq(CURSOR).addClass('active');
@@ -76,6 +82,29 @@ $('body').keypress(function(evt){
     else if(evt.which == KEY_P){ // share g+
         var url = 'https://plus.google.com/share?url=' + $('.item.active .link').html();
         window.open(url, 'gplus', "height=500,width=500,left=600,top=200");
+    }
+    else if(evt.which == KEY_QUES){ // help
+        var msg = ''
+                + '=== CURSOR ===\n'
+                + '\n'
+                + 'J - Move Down\n'
+                + 'K - Move Up\n'
+                + '. - Move Top\n'
+                + 'SHIFT+G - Move Bottom\n'
+                + '/ - Toggle Filter mode\n'
+                + '\n'
+                + '=== ITEM ===\n'
+                + '\n'
+                + 'ENTER - Expand item\n'
+                + 'L - Collapse item\n'
+                + '\n'
+                + '=== OTHER ===\n'
+                + '\n'
+                + 'R - Refresh fread\n'
+                + 'O - Open in new window\n'
+                + 'P - Share to Google+\n'
+                ;
+        alert(msg);
     }
 
     // update cursor
