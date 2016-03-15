@@ -1,2 +1,2 @@
 # fread
-Feed reader ( [live](http://diewland.com/fread) )
+Feed reader ( [live](http://diewland.github.io/fread) )
