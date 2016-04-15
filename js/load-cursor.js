@@ -91,12 +91,12 @@ $('body').keypress(function(evt){
     else if(evt.which == KEY_DOT){ // top
         CURSOR = 0;
         $('.item .content').slideUp();
-        window.scrollTo(0, 0, { behavior: 'smooth' });
+        window.scrollTo({ left: 0, top: 0, behavior: 'smooth' });
     }
     else if(evt.which == KEY_G){ // bottom
         CURSOR = $('.item').length - 1;
         $('.item .content').slideUp();
-        window.scrollTo(0, $('.item').last().offset().top, { behavior: 'smooth' })
+        window.scrollTo({ left: 0, top: $('.item').last().offset().top, behavior: 'smooth' })
     }
     else if(evt.which == KEY_L){ // collapse
         $('.item .content').slideUp();
@@ -148,11 +148,11 @@ $('body').keypress(function(evt){
     // console.log( win_height, rel_offset, abs_offset);
     //
     if((evt.which == KEY_J)&&(rel_offset + 100 > win_height)){ // close to end
-        console.log('down', abs_offset, abs_offset-50, 'x');
-        window.scrollTo(0, abs_offset - 50, { behavior: 'smooth' });
+        // console.log('down', abs_offset, abs_offset-50, 'x');
+        window.scrollTo({ left: 0, top: abs_offset - 50, behavior: 'smooth' });
     }
     else if((evt.which == KEY_K)&&(rel_offset < 50)){ // close to top
-        console.log('up', abs_offset, win_height, abs_offset - (win_height/2), 'x');
-        window.scrollTo(0, abs_offset - (win_height/2), { behavior: 'smooth' });
+        // console.log('up', abs_offset, win_height, abs_offset - (win_height/2), 'x');
+        window.scrollTo({ left: 0, top: abs_offset - (win_height/2), behavior: 'smooth' });
     }
 });
