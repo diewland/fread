@@ -1,5 +1,5 @@
 # fread
-Feed reader ( [live](http://diewland.github.io/fread) )
+Feed reader ( [live](http://diewland.com/fread) )
 
 #### cursor
 
