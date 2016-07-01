@@ -9,4 +9,6 @@ var sources = [
     { name: 'techchrunch',      url: 'http://feeds.feedburner.com/TechCrunch/' },
     { name: 'xda-developers',   url: 'http://www.xda-developers.com/feed' },
     { name: 'lifehacker',       url: 'http://feeds.gawker.com/lifehacker/full' },
+    { name: 'cnet',             url: 'http://www.cnet.com/rss/all/' },
+    { name: 'gizmodo',          url: 'http://feeds.gawker.com/gizmodo/full' },
 ];
