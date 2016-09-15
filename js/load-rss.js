@@ -6,52 +6,56 @@ var left_sources = sources.length;
 $('#fread').html('<br />');
 
 for( i in sources){
-    var src = sources[i];
-    whatever_fetch(src['url'], src['name'], function(src_name, resp_text){
+    (function(src){
+        whatever_fetch(src['url'], src['name'], function(src_name, resp_text){
+            try {
+                var xmlDoc = $.parseXML( resp_text );
+                var $xml = $( xmlDoc );
+                $('#fread').append('&nbsp; &nbsp;=> Fetching from ' + src_name + '..</br>');
 
-        $('#fread').append('&nbsp; &nbsp;=> Fetching from ' + src_name + '..</br>');
+                var items = $xml.find( 'item' );  // (default) blognone, droidsans
+                if(items.length == 0){
+                    items = $xml.find( 'entry' ); // the verge
+                }
+                for(var i=0; i<=items.length; i++){
+                    var item = items[i];
 
-        var xmlDoc = $.parseXML( resp_text );
-        var $xml = $( xmlDoc );
+                    // console.log(item); // TODO
 
-        var items = $xml.find( 'item' );  // (default) blognone, droidsans
-        if(items.length == 0){
-            items = $xml.find( 'entry' ); // the verge
-        }
-        for(var i=0; i<=items.length; i++){
-            var item = items[i];
-
-            // console.log(item); // TODO
-
-            // ( default ) blognone, droidsans
-            var title = $(item).find('title').first().text();
-            var pub_date =  $(item).find('pubDate').text();
-            var desc = $(item).find('description').text();
-            var link = $(item).find('link').text();
-            var owner = $(item).find('creator').first().text();
-            if(!desc){ // theverge
-                pub_date = $(item).find('published').text();
-                desc = $(item).find('content').text();
-                link = $(item).find('link').attr('href');
+                    // ( default ) blognone, droidsans
+                    var title = $(item).find('title').first().text();
+                    var pub_date =  $(item).find('pubDate').text();
+                    var desc = $(item).find('description').text();
+                    var link = $(item).find('link').text();
+                    var owner = $(item).find('creator').first().text();
+                    if(!desc){ // theverge
+                        pub_date = $(item).find('published').text();
+                        desc = $(item).find('content').text();
+                        link = $(item).find('link').attr('href');
+                    }
+                    if(title){
+                        DATA.push({
+                            src:        src_name,
+                            title:      title,
+                            pub_date:   new Date(pub_date),
+                            desc:       desc,
+                            link:       link,
+                            owner:      owner == '' ? '' : 'by ' + owner,
+                        })
+                    }
+                }
             }
-            if(title){
-                DATA.push({
-                    src:        src_name,
-                    title:      title,
-                    pub_date:   new Date(pub_date),
-                    desc:       desc,
-                    link:       link,
-                    owner:      owner == '' ? '' : 'by ' + owner,
-                })
+            catch(err){
+                console.log(src, err);
             }
-        }
 
-        // load all source ?
-        left_sources--;
-        if(left_sources == 0){
-            render_feed(DATA);
-        }
-    });
+            // load all source ?
+            left_sources--;
+            if(left_sources == 0){
+                render_feed(DATA);
+            }
+        });
+    })(sources[i]);
 }
 
 function render_feed(cur_data, filter){
@@ -84,7 +88,8 @@ function render_feed(cur_data, filter){
                         + "<div><a class='link' href='" + d['link'] + "' target='_blank'>" + d['link'] + "</a></div>"
                     + "</div>"
                 + "</div>";
-        $('#fread').prepend(row)
+        row = $.parseHTML(row); // safe html text
+        $('#fread').prepend(row);
     }
 
     // bind mouse events
