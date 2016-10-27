@@ -25,7 +25,7 @@ body {
     display: none;
 }
 .item.active {
-    background-color: #FFF;
+    background-color: #FFF !important;
 }
 
 /* <=md */

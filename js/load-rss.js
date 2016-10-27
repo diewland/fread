@@ -41,6 +41,7 @@ for( i in sources){
                             desc:       desc,
                             link:       link,
                             owner:      owner == '' ? '' : 'by ' + owner,
+                            css:        src.css,
                         })
                     }
                 }
@@ -77,7 +78,8 @@ function render_feed(cur_data, filter){
     $('#fread').html('');
     for(i in cur_data){
         var d = cur_data[i];
-        var row = "<div class='item' ref='" + (cur_data.length-i-1) + "'>"
+        var css = d.css;
+        var row = "<div class='item' ref='" + (cur_data.length-i-1) + "' style='" + css + "'>"
                     + "<div class='bar row'>"
                         + "<div class='col-md-9'>" + d['src'] + " - " + d['title'] + "</div>"
                         + "<div class='col-md-3 ts'>" + d['pub_date'].toLocaleString() + "</div>"
