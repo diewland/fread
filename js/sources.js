@@ -12,4 +12,5 @@ var sources = [
     { name: 'cnet',                 url: 'http://www.cnet.com/rss/all/' },
     { name: 'gizmodo',              url: 'http://feeds.gawker.com/gizmodo/full' },
     { name: 'front-end dev weekly', url: 'http://frontenddevweekly.com/issues.rss', css: 'background-color: #fff9a5;' },
+    { name: 'nuuneoi',              url: 'http://nuuneoi.com/blog/rssfeed.php' },
 ];
