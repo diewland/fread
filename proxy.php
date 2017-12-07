@@ -19,12 +19,14 @@
     }
 
     */
-    $curl_handle=curl_init();
-    curl_setopt($curl_handle, CURLOPT_URL, $_POST['url']);
-    curl_setopt($curl_handle, CURLOPT_CONNECTTIMEOUT, 2);
-    curl_setopt($curl_handle, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($curl_handle, CURLOPT_USERAGENT, 'proxyman');
-    $query = curl_exec($curl_handle);
-    curl_close($curl_handle);
+    $ch=curl_init();
+    curl_setopt($ch, CURLOPT_URL, $_POST['url']);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 2);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_USERAGENT, 'proxyman');
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+    $query = curl_exec($ch);
+    curl_close($ch);
     echo $query;
 ?>
