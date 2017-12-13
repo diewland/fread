@@ -10,4 +10,5 @@ var sources = [
     { name: 'lifehacker',           url: 'https://lifehacker.com/rss' },
     { name: 'cnet',                 url: 'https://www.cnet.com/rss/all/' },
     { name: 'nuuneoi',              url: 'https://nuuneoi.com/blog/rssfeed.php' },
+    { name: 'google-research',      url: 'https://www.blogger.com/feeds/21224994/posts/default' },
 ];
